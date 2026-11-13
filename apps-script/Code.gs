@@ -5,7 +5,7 @@
  *  - الأسئلة  : من فورم قوقل المربوط بالشيت (أو FORM_URL)
  *  - الإجابات : ورقة «Responses» — كل جواب ينكتب تحت عموده (نفس عناوين الفورم)،
  *               والكود ينكتب في عمود «CODE» والفرع في عمود «BRANCH»
- *  - بعد الإرسال : حالة الكود تصير «Used» (علامة بس — الكود يضل شغال)
+ *  - أول ما أحد يطلب الكود : حالته تصير «Used» (علامة بس — الكود يضل شغال)
  *                 الكود ينتهي بس إذا خانة C فاضية. أول ما تعدّل C ترجع الحالة «Not used»
  *
  * الصفحة (index.html) تكلّم هذا السكربت من برّا عن طريق رابط الـ Web app.
@@ -22,7 +22,7 @@ const SHEET_ID = '';
 const FORM_URL = '';
 
 // الصفحة العامة (GitHub Pages). رابطك للناس = هذي الصفحة + ?api=<رابط النشر حقك>
-const PAGE_URL = 'https://24hmood24.github.io/branch-codes/';
+const PAGE_URL = 'https://zadalsultan.github.io/branch-codes/';
 
 // شكل ورقة الأكواد
 const CODES = 'codes';          // اسم الورقة
@@ -138,8 +138,13 @@ function findBranch_(branch) {
   return x;
 }
 
+// يرجّع كود الفرع، ويعلّم الحالة «Used» أول ما ينطلب (علامة بس — الكود يضل شغال)
 function getCode(branch) {
-  return findBranch_(branch).code;
+  const x = findBranch_(branch);
+  if (x.status.toLowerCase() !== USED.toLowerCase()) {
+    try { codesSheet_().getRange(x.row, COL_STATUS).setValue(USED); } catch (e) {}
+  }
+  return x.code;
 }
 
 // لما أحد يعدّل الكود (عمود C) في ورقة codes ترجع الحالة «Not used»
@@ -389,8 +394,6 @@ function submit(branch, answers) {
       sh.getRange(row, i + 1).setValue(v);
     });
 
-    // الكود صار مستخدم
-    codesSheet_().getRange(x.row, COL_STATUS).setValue(USED);
     SpreadsheetApp.flush();
   } finally {
     lock.releaseLock();
