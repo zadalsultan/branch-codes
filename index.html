@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<title>طلب كود - code request</title>
+<meta name="description" content="اختر الفرع واطلب الكود، بعدين عبّ المعلومات">
+<meta name="theme-color" content="#0b0b0b">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<!-- معاينة الرابط في واتساب وتيليقرام وغيرها -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Zad Alsultan">
+<meta property="og:title" content="طلب كود - code request">
+<meta property="og:description" content="اختر الفرع واطلب الكود، بعدين عبّ المعلومات">
+<meta property="og:url" content="https://zadalsultan.github.io/branch-codes/">
+<meta property="og:image" content="https://zadalsultan.github.io/branch-codes/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary_large_image">
+<script>
+  // الوضع المحفوظ (فاتح / داكن) يتطبق قبل ما ترسم الصفحة عشان ما يومض
+  try { var t = localStorage.getItem('theme'); document.documentElement.setAttribute('data-theme', t === 'light' ? 'light' : 'dark'); } catch (e) {}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+  /* ===== الألوان: الدارك مود (الافتراضي) — رمادي داكن وبرتقالي ===== */
+  :root{
+    --bg:#2a2a2d; --hi:#353539; --lo:#1f1f21; --ink:#ececee; --muted:#9c9ca3;
+    --acc:#ff8a3d; --on:#1e1208; --rq:#ff6b6b; --glow:0 0 12px rgba(255,138,61,.5);
+    color-scheme:dark;
+  }
+  /* ===== الوضع العادي ===== */
+  :root[data-theme="light"]{
+    --bg:#ebeaee; --hi:#ffffff; --lo:#c8c7cd; --ink:#2a2a2d; --muted:#75757d;
+    --acc:#e46f1e; --on:#ffffff; --rq:#d9403a; --glow:none;
+    color-scheme:light;
+  }
+
+  *{box-sizing:border-box}
+  body{font-family:"Tajawal",Tahoma,Arial,sans-serif;background:var(--bg);margin:0;padding:24px 18px 48px;color:var(--ink);
+       min-height:100vh;line-height:1.65;transition:background-color .3s,color .3s}
+  .wrap{max-width:560px;margin:0 auto}
+
+  /* ===== أزرار الوضع ===== */
+  .theme{position:fixed;top:16px;left:16px;z-index:20;display:flex;gap:6px;padding:5px;border-radius:999px;background:var(--bg);
+         box-shadow:inset 3px 3px 6px var(--lo),inset -3px -3px 6px var(--hi)}
+  .theme button{width:36px;height:36px;border:0;border-radius:50%;background:var(--bg);color:var(--muted);
+                display:grid;place-items:center;cursor:pointer;transition:.2s}
+  .theme button svg{width:17px;height:17px}
+  .theme button[aria-pressed="true"]{color:var(--acc);box-shadow:3px 3px 6px var(--lo),-3px -3px 6px var(--hi)}
+
+  /* ===== الكروت ===== */
+  .card{background:var(--bg);border-radius:24px;padding:22px 20px;margin-bottom:22px;
+        box-shadow:9px 9px 18px var(--lo),-9px -9px 18px var(--hi);transition:background-color .3s,box-shadow .3s}
+
+  /* ===== الهيدر مع اللوقو ===== */
+  .head{text-align:center;background:transparent;box-shadow:none;padding:40px 8px 10px;margin-bottom:18px}
+  .logo{width:112px;height:112px;margin:0 auto 18px;border-radius:30px;padding:8px;background:var(--bg);
+        box-shadow:9px 9px 18px var(--lo),-9px -9px 18px var(--hi)}
+  .logo span{display:block;width:100%;height:100%;border-radius:23px;background:#0b0b0b url(logo.webp) 50% 48%/165% no-repeat;
+             box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+  .logo-line{width:48px;height:3px;border-radius:3px;margin:0 auto 14px;background:var(--acc);box-shadow:var(--glow)}
+  h1{font-size:25px;margin:0 0 6px;font-weight:800}
+  .sub{color:var(--muted);font-size:14px;line-height:1.7}
+  .label{font-size:16px;font-weight:700;margin-bottom:12px}
+  .req{color:var(--rq)}
+
+  /* ===== الحقول (غاطسة) ===== */
+  input[type=text],input[type=tel],input[type=email],input[type=number],input[type=date],input[type=time],textarea{
+    width:100%;font-size:16px;padding:13px 16px;border:0;border-radius:16px;outline:none;font-family:inherit;
+    background:var(--bg);color:inherit;box-shadow:inset 4px 4px 9px var(--lo),inset -4px -4px 9px var(--hi);transition:box-shadow .2s}
+  input:focus,textarea:focus{box-shadow:inset 4px 4px 9px var(--lo),inset -4px -4px 9px var(--hi),0 0 0 2px var(--acc)}
+  textarea{min-height:96px;resize:vertical}
+  input[type=file]{width:100%;font-family:inherit;font-size:14px;color:var(--muted);padding:14px;border-radius:16px;background:var(--bg);
+                   box-shadow:inset 4px 4px 9px var(--lo),inset -4px -4px 9px var(--hi)}
+  input[type=file]::file-selector-button{font-family:inherit;font-weight:700;border:0;border-radius:12px;background:var(--bg);color:var(--acc);
+    padding:8px 14px;margin-left:10px;cursor:pointer;box-shadow:3px 3px 6px var(--lo),-3px -3px 6px var(--hi)}
+  ::placeholder{color:var(--muted);opacity:.85}
+
+  /* ===== قائمة الفروع ===== */
+  .combo{position:relative}
+  .combo input{width:100%;font-size:16px;padding:14px 16px;border:0;border-radius:16px;outline:none;font-family:inherit;
+               background:var(--bg);color:inherit;box-shadow:inset 4px 4px 9px var(--lo),inset -4px -4px 9px var(--hi)}
+  .combo input:focus{box-shadow:inset 4px 4px 9px var(--lo),inset -4px -4px 9px var(--hi),0 0 0 2px var(--acc)}
+  .opts{display:none;position:absolute;top:calc(100% + 10px);left:0;right:0;background:var(--bg);border-radius:18px;max-height:280px;
+        overflow:auto;z-index:5;padding:8px;box-shadow:9px 9px 18px var(--lo),-9px -9px 18px var(--hi)}
+  .opts div{padding:12px 14px;cursor:pointer;font-size:15px;border-radius:12px}
+  .opts div:hover,.opts div.act{color:var(--acc);box-shadow:inset 3px 3px 6px var(--lo),inset -3px -3px 6px var(--hi)}
+  .opts .none{color:var(--muted);cursor:default}
+  .opts .none:hover{box-shadow:none;color:var(--muted)}
+
+  /* ===== الأزرار (بارزة) ===== */
+  .btn{display:inline-flex;align-items:center;justify-content:center;border:0;border-radius:16px;background:var(--acc);color:var(--on);
+       font-size:16px;font-weight:700;padding:14px 30px;cursor:pointer;font-family:inherit;margin-top:18px;text-decoration:none;
+       box-shadow:6px 6px 12px var(--lo),-6px -6px 12px var(--hi);transition:box-shadow .15s,transform .1s}
+  .btn:active{box-shadow:inset 3px 3px 6px rgba(0,0,0,.25);transform:translateY(1px)}
+  .btn:disabled{opacity:.6}
+  .btn.light{background:var(--bg);color:var(--acc)}
+  .btn.light:active{box-shadow:inset 3px 3px 6px var(--lo),inset -3px -3px 6px var(--hi)}
+  #getBtn,#sendBtn{width:100%}
+
+  /* ===== الكود ===== */
+  #code{font-size:32px;font-weight:800;letter-spacing:5px;padding:18px 12px;border-radius:18px;direction:ltr;text-align:center;
+        user-select:all;margin-top:8px;word-break:break-all;font-family:ui-monospace,Menlo,Consolas,monospace;
+        color:var(--acc);text-shadow:var(--glow);box-shadow:inset 5px 5px 10px var(--lo),inset -5px -5px 10px var(--hi)}
+
+  /* ===== الخيارات ===== */
+  .opt{display:flex;align-items:center;gap:12px;padding:10px 8px;cursor:pointer;font-size:15px;border-radius:14px}
+  .opt input{appearance:none;-webkit-appearance:none;width:20px;height:20px;margin:0;flex:none;border-radius:50%;background:var(--bg);
+             cursor:pointer;box-shadow:inset 2px 2px 5px var(--lo),inset -2px -2px 5px var(--hi);transition:.15s}
+  .opt input[type=checkbox]{border-radius:6px}
+  .opt input:checked{background:var(--acc);box-shadow:0 0 0 4px var(--bg),3px 3px 7px var(--lo),var(--glow)}
+  .opt:has(input:checked){color:var(--acc)}
+
+  .err{color:var(--rq);font-size:13px;margin-top:8px}
+  .hide{display:none!important}
+  .done{text-align:center;font-size:18px;padding:36px 22px}
+  .done p{font-size:20px;font-weight:700;margin:0}
+</style>
+</head>
+<body>
+<div class="theme" role="group" aria-label="theme">
+  <button type="button" id="lightBtn" aria-label="light" title="light" onclick="setTheme('light')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+  </button>
+  <button type="button" id="darkBtn" aria-label="dark" title="dark" onclick="setTheme('dark')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+  </button>
+</div>
+
+<div class="wrap">
+  <div class="card head">
+    <div class="logo" role="img" aria-label="Zad Alsultan"><span></span></div>
+    <div class="logo-line"></div>
+    <h1 id="title">طلب كود - code request</h1>
+    <div class="sub"><span id="subtitle"></span> <span class="req">* مطلوب</span></div>
+  </div>
+
+  <!-- الخطوة 1: اختيار الفرع -->
+  <div class="card" id="step1">
+    <div class="label">الفرع <span class="req">*</span></div>
+    <div class="combo">
+      <input type="text" id="search" placeholder="جاري التحميل..." autocomplete="off" disabled>
+      <div class="opts" id="opts"></div>
+    </div>
+    <button class="btn" id="getBtn" onclick="reqCode()">اطلب الكود</button>
+    <div class="err" id="err1"></div>
+  </div>
+
+  <!-- الخطوة 2: الكود + النموذج -->
+  <div id="step2" class="hide">
+    <div class="card">
+      <div class="label" id="who"></div>
+      <div id="code"></div>
+      <button class="btn light" id="copyBtn" onclick="cp()">نسخ الكود</button>
+    </div>
+    <div id="fields"></div>
+    <div class="card" id="sendCard">
+      <button class="btn" id="sendBtn" onclick="send()">إرسال</button>
+      <div class="err" id="err2"></div>
+    </div>
+  </div>
+
+  <!-- الخطوة 3: تم -->
+  <div class="card done hide" id="step3">
+    <p>تم إرسال معلوماتك ✓</p>
+    <button class="btn light" onclick="location.reload()">طلب جديد</button>
+  </div>
+</div>
+
+<script>
+  // ===== زر الوضع الفاتح / الداكن =====
+  function curTheme() {
+    var t = document.documentElement.getAttribute('data-theme');
+    return t === 'light' ? 'light' : 'dark';
+  }
+  function paintTheme() {
+    var t = curTheme();
+    document.getElementById('lightBtn').setAttribute('aria-pressed', t === 'light');
+    document.getElementById('darkBtn').setAttribute('aria-pressed', t === 'dark');
+  }
+  function setTheme(t) {
+    document.documentElement.setAttribute('data-theme', t);
+    try { localStorage.setItem('theme', t); } catch (e) {}
+    paintTheme();
+  }
+  paintTheme();
+</script>
+
+<script src="config.js"></script>
+<script>
+  var C = window.APP_CONFIG || {};
+  // رابط خاص: ?api=<رابط النشر> — عشان أي أحد يستخدم نفس الصفحة مع شيته هو
+  (function () {
+    var m = /[?&]api=([^&#]+)/.exec(location.search);
+    if (!m) return;
+    var api = decodeURIComponent(m[1]);
+    if (/^https:\/\/script\.google\.com\/(a\/macros\/[^\/]+|macros)\/s\/[\w-]+\/exec$/.test(api)) C.API_URL = api;
+  })();
+  var branches = [], questions = [], chosen = '', branchMatch = {};
+  var $ = function (id) { return document.getElementById(id); };
+
+  function setHead(t, d) {
+    if (t) { $('title').textContent = t; document.title = t; }
+    $('subtitle').textContent = d || '';
+  }
+  setHead(C.TITLE, C.SUBTITLE);
+
+  // ===== الاتصال بالـ API (بدون كوكيز، عشان يشتغل حتى لو الزائر مسجّل بأكثر من حساب قوقل) =====
+  function handle(r) {
+    return r.json().then(function (d) {
+      if (!d.ok) throw new Error(d.error || 'صار خطأ');
+      return d;
+    });
+  }
+  function apiGet(params) {
+    var q = Object.keys(params).map(function (k) {
+      return encodeURIComponent(k) + '=' + encodeURIComponent(params[k]);
+    }).join('&');
+    return fetch(C.API_URL + '?' + q, { credentials: 'omit' }).then(handle);
+  }
+  function apiPost(body) {
+    return fetch(C.API_URL, {
+      method: 'POST',
+      credentials: 'omit',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(body)
+    }).then(handle);
+  }
+  function netErr(e) {
+    return (e && e.message && e.message !== 'Failed to fetch') ? e.message : 'تعذّر الاتصال، جرّب مرة ثانية';
+  }
+
+  // ===== تحميل الفروع والأسئلة =====
+  apiGet({ action: 'start' }).then(function (d) {
+    branches = d.branches || [];
+    questions = d.questions || [];
+    branchMatch = d.branchMatch || {};
+    setHead(C.TITLE || d.title, C.SUBTITLE || d.description);
+    $('search').disabled = false;
+    $('search').placeholder = branches.length ? 'ابحث أو اختر الفرع' : 'ما فيه فروع حالياً';
+  }).catch(function (e) { $('err1').textContent = netErr(e); $('search').placeholder = ''; });
+
+  // ===== القائمة المنسدلة مع البحث =====
+  function norm(s) {
+    return String(s).toLowerCase()
+      .replace(/[أإآ]/g, 'ا').replace(/ة/g, 'ه').replace(/ى/g, 'ي')
+      .replace(/\s+/g, ' ').trim();
+  }
+  var active = -1;
+  function showOpts() {
+    var q = norm($('search').value), box = $('opts');
+    box.innerHTML = ''; active = -1;
+    var list = branches.filter(function (b) { return !q || norm(b).indexOf(q) >= 0; });
+    if (!list.length) {
+      var n = document.createElement('div'); n.className = 'none';
+      n.textContent = 'ما فيه فرع بهالاسم'; box.appendChild(n);
+    }
+    list.forEach(function (b) {
+      var d = document.createElement('div'); d.textContent = b;
+      d.onmousedown = function (e) { e.preventDefault(); pick(b); };
+      box.appendChild(d);
+    });
+    box.style.display = 'block';
+  }
+  function pick(b) {
+    chosen = b; $('search').value = b;
+    $('opts').style.display = 'none'; $('err1').textContent = '';
+  }
+  var s = $('search');
+  s.addEventListener('focus', showOpts);
+  s.addEventListener('click', showOpts);
+  s.addEventListener('input', function () { chosen = ''; showOpts(); });
+  s.addEventListener('blur', function () { setTimeout(function () { $('opts').style.display = 'none'; }, 150); });
+  s.addEventListener('keydown', function (e) {
+    var items = $('opts').querySelectorAll('div:not(.none)');
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (!items.length) return;
+      active = (active + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
+      items.forEach(function (it, i) { it.classList.toggle('act', i === active); });
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if ($('opts').style.display === 'none') { if (chosen) reqCode(); return; }
+      if (active >= 0 && items[active]) pick(items[active].textContent);
+      else if (items.length === 1) pick(items[0].textContent);
+      else if (chosen) reqCode();
+    }
+  });
+
+  // ===== طلب الكود =====
+  function reqCode() {
+    $('err1').textContent = '';
+    if (!chosen) { $('err1').textContent = 'اختر الفرع من القائمة'; return; }
+    $('getBtn').disabled = true; $('getBtn').textContent = '...';
+    apiGet({ action: 'code', branch: chosen }).then(function (d) {
+      $('who').textContent = 'كود فرع: ' + chosen;
+      $('code').textContent = d.code;
+      buildFields();
+      $('step1').classList.add('hide');
+      $('step2').classList.remove('hide');
+    }).catch(function (e) {
+      $('err1').textContent = netErr(e);
+      $('getBtn').disabled = false; $('getBtn').textContent = 'اطلب الكود';
+    });
+  }
+
+  // ===== أسئلة النموذج (من فورم قوقل) =====
+  function buildFields() {
+    var box = $('fields'); box.innerHTML = '';
+    if (!questions.length) { $('sendCard').classList.add('hide'); return; }
+    questions.forEach(function (q, i) {
+      var card = document.createElement('div'); card.className = 'card';
+      var lab = document.createElement('div'); lab.className = 'label'; lab.textContent = q.q;
+      if (q.type === 'عنوان') { lab.style.fontSize = '20px'; }
+      if (q.required) { var r = document.createElement('span'); r.className = 'req'; r.textContent = ' *'; lab.appendChild(r); }
+      card.appendChild(lab);
+      if (q.help) { var h = document.createElement('div'); h.className = 'sub'; h.style.margin = '-6px 0 12px'; h.textContent = q.help; card.appendChild(h); }
+      if (q.type === 'عنوان') { box.appendChild(card); return; }
+      var el;
+      if (q.type === 'اختيار' || q.type === 'متعدد') {
+        el = document.createElement('div');
+        q.options.forEach(function (o) {
+          var l = document.createElement('label'); l.className = 'opt';
+          var rd = document.createElement('input');
+          rd.type = q.type === 'متعدد' ? 'checkbox' : 'radio'; rd.name = 'q' + i; rd.value = o;
+          l.appendChild(rd); l.appendChild(document.createTextNode(o)); el.appendChild(l);
+        });
+      } else if (q.type === 'فقرة') {
+        el = document.createElement('textarea');
+      } else if (q.type === 'ملف') {
+        el = document.createElement('input');
+        el.type = 'file'; el.accept = 'image/*,application/pdf'; el.multiple = true;
+      } else {
+        el = document.createElement('input');
+        el.type = { 'رقم': 'number', 'جوال': 'tel', 'بريد': 'email', 'تاريخ': 'date', 'وقت': 'time' }[q.type] || 'text';
+        if (q.type === 'جوال') { el.inputMode = 'tel'; el.placeholder = '05xxxxxxxx'; el.dir = 'ltr'; }
+        if (q.type === 'بريد') { el.dir = 'ltr'; }
+      }
+      el.id = 'f' + i;
+      if (q.auto === 'branch' && branchMatch[chosen]) {
+        Array.prototype.forEach.call(el.querySelectorAll('input'), function (x) { if (x.value === branchMatch[chosen]) x.checked = true; });
+      }
+      card.appendChild(el);
+      var er = document.createElement('div'); er.className = 'err'; er.id = 'e' + i; card.appendChild(er);
+      box.appendChild(card);
+    });
+  }
+
+  function val(q, i) {
+    if (q.type === 'اختيار') {
+      var r = document.querySelector('input[name="q' + i + '"]:checked');
+      return r ? r.value : '';
+    }
+    if (q.type === 'متعدد') {
+      return Array.prototype.map.call(document.querySelectorAll('input[name="q' + i + '"]:checked'),
+        function (x) { return x.value; }).join('، ');
+    }
+    if (q.type === 'ملف') return Array.prototype.slice.call($('f' + i).files || [], 0, 5);
+    return $('f' + i).value.trim();
+  }
+
+  // الصور تصغر قبل الإرسال (أطول ضلع 1600px) عشان ترفع بسرعة
+  function readFile(f) {
+    return new Promise(function (ok, no) {
+      var rd = new FileReader();
+      rd.onerror = function () { no(new Error('تعذّر قراءة الملف')); };
+      if (!/^image\//.test(f.type) || f.type === 'image/gif') {
+        rd.onload = function () { ok({ name: f.name, type: f.type, data: String(rd.result).split(',')[1] }); };
+        rd.readAsDataURL(f); return;
+      }
+      rd.onload = function () {
+        var img = new Image();
+        img.onerror = function () { ok({ name: f.name, type: f.type, data: String(rd.result).split(',')[1] }); };
+        img.onload = function () {
+          var k = Math.min(1, 1600 / Math.max(img.width, img.height));
+          var c = document.createElement('canvas');
+          c.width = Math.round(img.width * k); c.height = Math.round(img.height * k);
+          c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+          ok({ name: f.name, type: 'image/jpeg', data: c.toDataURL('image/jpeg', 0.85).split(',')[1] });
+        };
+        img.src = rd.result;
+      };
+      rd.readAsDataURL(f);
+    });
+  }
+
+  function send() {
+    var answers = {}, ok = true;
+    questions.forEach(function (q, i) {
+      if (q.type === 'عنوان') return;
+      var v = val(q, i); answers[q.id] = v; $('e' + i).textContent = '';
+      if (q.type === 'ملف') {
+        if (q.required && !v.length) { $('e' + i).textContent = 'هذا السؤال مطلوب'; ok = false; }
+        return;
+      }
+      if (q.required && !v) { $('e' + i).textContent = 'هذا السؤال مطلوب'; ok = false; }
+      else if (v && q.type === 'جوال' && !/^\+?[0-9\s]{8,15}$/.test(v)) { $('e' + i).textContent = 'رقم الجوال غير صحيح'; ok = false; }
+      else if (v && q.type === 'بريد' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) { $('e' + i).textContent = 'البريد غير صحيح'; ok = false; }
+    });
+    if (!ok) { $('err2').textContent = 'فيه أسئلة ناقصة'; return; }
+    $('err2').textContent = '';
+    $('sendBtn').disabled = true; $('sendBtn').textContent = '...';
+    var jobs = questions.map(function (q) {
+      if (q.type !== 'ملف') return null;
+      return Promise.all(answers[q.id].map(readFile)).then(function (arr) { answers[q.id] = arr; });
+    }).filter(Boolean);
+    Promise.all(jobs).then(function () {
+      return apiPost({ action: 'submit', branch: chosen, answers: answers });
+    }).then(function () {
+      $('step2').classList.add('hide'); $('step3').classList.remove('hide'); window.scrollTo(0, 0);
+    }).catch(function (e) {
+      $('err2').textContent = netErr(e);
+      $('sendBtn').disabled = false; $('sendBtn').textContent = 'إرسال';
+    });
+  }
+
+  function cp() {
+    var t = $('code').textContent;
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(t).then(function () { $('copyBtn').textContent = 'تم النسخ ✓'; });
+    }
+  }
+</script>
+</body>
+</html>
